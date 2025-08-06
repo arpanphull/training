@@ -189,6 +189,96 @@ Start by using the appropriate tools to complete this task. Begin with navigatio
                 print(f"❌ Error in Claude conversation: {str(e)}")
                 break
         
+        # Task completion verification
+        print(f"\n🔍 TASK VERIFICATION")
+        print("-" * 50)
+        print("Asking Claude to verify if the task has been completed successfully...")
+        
+        verification_prompt = f"""Please verify if the following task has been completed successfully:
+
+**ORIGINAL TASK**: {task_description}
+
+Look at the current state of the webpage and the actions you've taken. Have you successfully completed all aspects of this task?
+
+Please provide:
+1. A clear YES or NO answer about whether the task is complete
+2. What you accomplished during this session
+3. What (if anything) still needs to be done
+4. Any observations about the final state
+
+You can use the analyze_viewport_screenshot tool to check the current page state if needed."""
+
+        try:
+            # Add verification prompt to conversation
+            messages.append({"role": "user", "content": verification_prompt})
+            
+            # Get Claude's verification response
+            verification_response = self.client.messages.create(
+                model="claude-3-5-sonnet-20241022",
+                max_tokens=2000,
+                tools=available_tools,
+                messages=messages
+            )
+            
+            # Process verification response
+            verification_text = ""
+            verification_tool_calls = []
+            
+            for content_block in verification_response.content:
+                if content_block.type == "text":
+                    verification_text += content_block.text
+                    print(f"🤖 Claude's verification: {content_block.text}")
+                elif content_block.type == "tool_use":
+                    # Claude wants to analyze current state
+                    tool_name = content_block.name
+                    tool_input = content_block.input
+                    tool_use_id = content_block.id
+                    
+                    print(f"\n🔧 Claude wants to verify using tool: {tool_name}")
+                    tool_result = await self.execute_tool_for_claude(tool_name, tool_input)
+                    
+                    verification_tool_calls.append({
+                        "tool_name": tool_name,
+                        "result": tool_result
+                    })
+                    
+                    # Send tool result back for final verification
+                    tool_result_msg = [{
+                        "type": "tool_result",
+                        "tool_use_id": tool_use_id,
+                        "content": json.dumps(tool_result, indent=2)
+                    }]
+                    
+                    messages.append({"role": "assistant", "content": verification_response.content})
+                    messages.append({"role": "user", "content": tool_result_msg})
+                    
+                    # Get final verification after tool use
+                    final_verification = self.client.messages.create(
+                        model="claude-3-5-sonnet-20241022",
+                        max_tokens=1000,
+                        messages=messages
+                    )
+                    
+                    for final_block in final_verification.content:
+                        if final_block.type == "text":
+                            verification_text += "\n" + final_block.text
+                            print(f"🤖 Claude's final verification: {final_block.text}")
+            
+            # Store verification results
+            verification_result = {
+                "verification_text": verification_text,
+                "verification_tool_calls": verification_tool_calls,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            print(f"❌ Error in task verification: {str(e)}")
+            verification_result = {
+                "verification_text": f"Verification failed: {str(e)}",
+                "verification_tool_calls": [],
+                "timestamp": datetime.now().isoformat()
+            }
+        
         # Convert conversation to serializable format
         serializable_conversation = []
         for msg in messages:
@@ -233,6 +323,7 @@ Start by using the appropriate tools to complete this task. Begin with navigatio
             "tool_calls": len(self.tool_execution_log),
             "successful_tools": sum(1 for log in self.tool_execution_log if log["success"]),
             "conversation_length": len(messages),
+            "task_verification": verification_result,
             "tool_execution_log": self.tool_execution_log,
             "final_conversation": serializable_conversation
         }
@@ -243,6 +334,11 @@ Start by using the appropriate tools to complete this task. Begin with navigatio
             await self.browser.close()
             self.browser = None
             self.tool_handler = None
+    
+    def keep_browser_open(self):
+        """Keep browser open for continued tool usage."""
+        # Don't close browser - tools need it to remain open
+        pass
 
 # Test tasks for Claude
 REAL_TEST_TASKS = [
@@ -307,6 +403,21 @@ async def run_real_claude_test():
         print(f"   • Successful tools: {result['successful_tools']}")
         print(f"   • Success rate: {(result['successful_tools']/result['tool_calls']*100):.1f}%" if result['tool_calls'] > 0 else "No tools used")
         
+        # Print verification summary
+        verification = result.get('task_verification', {})
+        if verification:
+            print(f"\n🔍 TASK VERIFICATION:")
+            verification_text = verification.get('verification_text', 'No verification available')
+            # Extract YES/NO if present
+            if 'YES' in verification_text.upper():
+                print(f"   ✅ Status: TASK COMPLETED")
+            elif 'NO' in verification_text.upper():
+                print(f"   ❌ Status: TASK NOT COMPLETED")
+            else:
+                print(f"   ❓ Status: UNCLEAR")
+            
+            print(f"   📝 Claude's assessment: {verification_text[:200]}..." if len(verification_text) > 200 else f"   📝 Claude's assessment: {verification_text}")
+        
         # Save detailed results
         results_file = f"claude_real_test_results_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
         with open(results_file, 'w') as f:
@@ -314,7 +425,25 @@ async def run_real_claude_test():
         
         print(f"\n💾 Detailed results saved to: {results_file}")
         
+        # Ask if user wants to keep browser open for inspection
+        try:
+            keep_open = input("\n🔍 Keep browser open for inspection? (y/n): ").strip().lower()
+            if keep_open == 'y':
+                print("🌐 Browser will remain open. Close manually when done.")
+                print("Press Ctrl+C to exit script while keeping browser open.")
+                try:
+                    # Keep script running but don't close browser
+                    while True:
+                        await asyncio.sleep(1)
+                except KeyboardInterrupt:
+                    print("\n👋 Script ended. Browser remains open.")
+                    return
+        except KeyboardInterrupt:
+            print("\n👋 Script ended.")
+        
     finally:
+        # Only cleanup if we reach here (user chose to close)
+        print("🧹 Closing browser...")
         await claude_automation.cleanup()
 
 async def main():

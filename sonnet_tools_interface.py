@@ -257,19 +257,39 @@ class SonnetWebTools:
                 )
             
             elif tool_name == "perform_click_action":
-                return await perform_click_action(
+                result = await perform_click_action(
                     page=self.page,
                     bbox=parameters["bbox"],
                     verbose=parameters.get("verbose", False)
                 )
+                # Add verification - check if page state changed
+                if result.get("success"):
+                    await self.page.wait_for_timeout(1000)  # Additional wait
+                    result["page_url_after_click"] = self.page.url
+                return result
             
             elif tool_name == "perform_input_action":
-                return await perform_input_action(
+                result = await perform_input_action(
                     page=self.page,
                     bbox=parameters["bbox"],
                     text=parameters["text"],
                     verbose=parameters.get("verbose", False)
                 )
+                # Add verification - check if text was actually input
+                if result.get("success"):
+                    await self.page.wait_for_timeout(500)  # Wait for input to be processed
+                    # Try to verify the input was successful
+                    try:
+                        # Get the focused element's value if possible
+                        focused_value = await self.page.evaluate("document.activeElement.value || ''")
+                        result["input_verification"] = {
+                            "expected_text": parameters["text"],
+                            "actual_value": focused_value,
+                            "text_matches": parameters["text"].lower() in focused_value.lower()
+                        }
+                    except:
+                        result["input_verification"] = {"status": "could_not_verify"}
+                return result
             
             elif tool_name == "perform_select_action":
                 return await perform_select_action(
