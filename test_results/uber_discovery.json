@@ -1,0 +1,34 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.uber.com/us/en/careers/?uclick_id=0067d0cc-7c43-42ea-af2e-f0ebb1972f89",
+    "https://www.uber.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Careers",
+      "bbox": [
+        64,
+        359,
+        114,
+        372
+      ],
+      "page_url": "https://www.uber.com/",
+      "scroll_position": 4800,
+      "timestamp": "2025-08-05T17:53:27.821762"
+    },
+    {
+      "label": "Uber Careers",
+      "bbox": [
+        63,
+        24,
+        200,
+        42
+      ],
+      "page_url": "https://www.uber.com/us/en/careers/?uclick_id=0067d0cc-7c43-42ea-af2e-f0ebb1972f89",
+      "scroll_position": 0,
+      "timestamp": "2025-08-05T17:53:35.423166"
+    }
+  ],
+  "total_elements": 2
+}

@@ -1,0 +1,21 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.airbnb.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Careers",
+      "bbox": [
+        847,
+        769,
+        899,
+        785
+      ],
+      "page_url": "https://www.airbnb.com/",
+      "scroll_position": 0,
+      "timestamp": "2025-08-05T17:53:05.705991"
+    }
+  ],
+  "total_elements": 1
+}

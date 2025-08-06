@@ -1,0 +1,21 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.microsoft.com/en-us/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Careers",
+      "bbox": [
+        1043,
+        506,
+        1078,
+        512
+      ],
+      "page_url": "https://www.microsoft.com/en-us/",
+      "scroll_position": 4000,
+      "timestamp": "2025-08-05T17:49:54.461901"
+    }
+  ],
+  "total_elements": 1
+}

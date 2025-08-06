@@ -1,0 +1,21 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.apple.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Career Opportunities",
+      "bbox": [
+        939,
+        542,
+        1057,
+        551
+      ],
+      "page_url": "https://www.apple.com/",
+      "scroll_position": 5600,
+      "timestamp": "2025-08-05T17:50:23.130148"
+    }
+  ],
+  "total_elements": 1
+}

@@ -1,0 +1,21 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://lifeatspotify.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Apply now",
+      "bbox": [
+        473,
+        586,
+        554,
+        602
+      ],
+      "page_url": "https://lifeatspotify.com/",
+      "scroll_position": 0,
+      "timestamp": "2025-08-05T17:56:57.131223"
+    }
+  ],
+  "total_elements": 1
+}
