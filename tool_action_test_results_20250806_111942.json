@@ -1,0 +1,298 @@
+{
+  "test_type": "tool_actions",
+  "timestamp": "2025-08-06T11:19:42.705834",
+  "total_tests": 7,
+  "passed_tests": 6,
+  "test_results": [
+    {
+      "test": "navigation",
+      "url": "https://httpbin.org/forms/post",
+      "success": true,
+      "result": {
+        "success": true,
+        "url": "https://httpbin.org/forms/post",
+        "requested_url": "https://httpbin.org/forms/post",
+        "title": "",
+        "wait_for": "networkidle",
+        "timeout": 30000,
+        "timestamp": "2025-08-06T11:17:20.170596"
+      },
+      "timestamp": "2025-08-06T11:17:20.170657"
+    },
+    {
+      "test": "navigation",
+      "url": "https://aijobs.ai",
+      "success": true,
+      "result": {
+        "success": true,
+        "url": "https://aijobs.ai/",
+        "requested_url": "https://aijobs.ai",
+        "title": "AI Jobs - The Leading Job Board for AI, ML & Data Science",
+        "wait_for": "networkidle",
+        "timeout": 30000,
+        "timestamp": "2025-08-06T11:17:25.853597"
+      },
+      "timestamp": "2025-08-06T11:17:25.853625"
+    },
+    {
+      "test": "navigation",
+      "url": "https://example.com",
+      "success": false,
+      "result": {
+        "success": false,
+        "error": "Page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://example.com/\", waiting until \"networkidle\"\n",
+        "url": "https://example.com",
+        "wait_for": "networkidle",
+        "timeout": 30000,
+        "timestamp": "2025-08-06T11:17:57.860150"
+      },
+      "timestamp": "2025-08-06T11:17:57.860249"
+    },
+    {
+      "test": "analysis",
+      "success": true,
+      "elements_found": 13,
+      "result": {
+        "success": true,
+        "screenshot_path": "screenshots/httpbin.org_viewport_20250806_111802.png",
+        "page_url": "https://httpbin.org/forms/post",
+        "viewport_size": {
+          "width": 1280,
+          "height": 800
+        },
+        "timestamp": "2025-08-06T11:18:26.947706",
+        "description": "A simple online pizza order form with fields for customer information, pizza customization options, and a submit button.",
+        "elements": [
+          {
+            "type": "input",
+            "label": "Customer name:",
+            "bbox": [
+              118,
+              16,
+              272,
+              36
+            ],
+            "semantic_role": "name_input",
+            "attributes": {}
+          },
+          {
+            "type": "input",
+            "label": "Telephone:",
+            "bbox": [
+              83,
+              55,
+              237,
+              73
+            ],
+            "semantic_role": "telephone_input",
+            "attributes": {}
+          },
+          {
+            "type": "input",
+            "label": "E-mail address:",
+            "bbox": [
+              113,
+              94,
+              266,
+              112
+            ],
+            "semantic_role": "email_input",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Small",
+            "bbox": [
+              29,
+              174,
+              87,
+              186
+            ],
+            "semantic_role": "pizza_size_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Medium",
+            "bbox": [
+              29,
+              209,
+              104,
+              222
+            ],
+            "semantic_role": "pizza_size_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Large",
+            "bbox": [
+              29,
+              244,
+              87,
+              258
+            ],
+            "semantic_role": "pizza_size_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Bacon",
+            "bbox": [
+              29,
+              334,
+              89,
+              348
+            ],
+            "semantic_role": "pizza_topping_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Extra Cheese",
+            "bbox": [
+              29,
+              370,
+              133,
+              384
+            ],
+            "semantic_role": "pizza_topping_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Onion",
+            "bbox": [
+              29,
+              406,
+              89,
+              420
+            ],
+            "semantic_role": "pizza_topping_option",
+            "attributes": {}
+          },
+          {
+            "type": "clickable",
+            "label": "Mushroom",
+            "bbox": [
+              29,
+              442,
+              119,
+              456
+            ],
+            "semantic_role": "pizza_topping_option",
+            "attributes": {}
+          },
+          {
+            "type": "input",
+            "label": "Preferred delivery time:",
+            "bbox": [
+              165,
+              509,
+              271,
+              527
+            ],
+            "semantic_role": "time_input",
+            "attributes": {}
+          },
+          {
+            "type": "input",
+            "label": "Delivery instructions:",
+            "bbox": [
+              151,
+              547,
+              335,
+              582
+            ],
+            "semantic_role": "delivery_instructions_input",
+            "attributes": {}
+          },
+          {
+            "type": "button",
+            "label": "Submit order",
+            "bbox": [
+              8,
+              604,
+              99,
+              622
+            ],
+            "semantic_role": "submit_button",
+            "attributes": {}
+          }
+        ]
+      },
+      "timestamp": "2025-08-06T11:18:26.947941"
+    },
+    {
+      "test": "input_action",
+      "field": "Customer name:",
+      "text": "Test Input Text",
+      "success": true,
+      "result": {
+        "success": true,
+        "action_type": "input",
+        "coordinates": [
+          254,
+          34
+        ],
+        "bbox": [
+          118,
+          16,
+          272,
+          36
+        ],
+        "text": "Test Input Text",
+        "timestamp": "2025-08-06T11:18:52.774355",
+        "input_verification": {
+          "expected_text": "Test Input Text",
+          "actual_value": "Test Input Text",
+          "text_matches": true
+        }
+      },
+      "timestamp": "2025-08-06T11:18:53.531266"
+    },
+    {
+      "test": "click_action",
+      "element": "Submit order",
+      "element_type": "button",
+      "url_before": "https://httpbin.org/forms/post",
+      "url_after": "https://httpbin.org/forms/post",
+      "success": true,
+      "result": {
+        "success": true,
+        "action_type": "click",
+        "coordinates": [
+          57,
+          915
+        ],
+        "bbox": [
+          8,
+          604,
+          98,
+          622
+        ],
+        "timestamp": "2025-08-06T11:19:20.327312",
+        "page_url_after_click": "https://httpbin.org/forms/post"
+      },
+      "timestamp": "2025-08-06T11:19:21.330086"
+    },
+    {
+      "test": "scroll_action",
+      "coordinates": [
+        0,
+        500
+      ],
+      "success": true,
+      "result": {
+        "success": true,
+        "action_type": "scroll",
+        "coordinates": [
+          0,
+          500
+        ],
+        "timestamp": "2025-08-06T11:19:28.777616"
+      },
+      "timestamp": "2025-08-06T11:19:28.777785"
+    }
+  ]
+}

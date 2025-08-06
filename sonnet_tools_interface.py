@@ -20,6 +20,31 @@ from viewport_analyzer import (
 # Tool definitions for Claude Sonnet 3.7
 SONNET_TOOLS = [
     {
+        "name": "navigate_to_url",
+        "description": "Navigate to a specific URL. The browser will automatically wait for the page to load completely before returning.",
+        "input_schema": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "URL to navigate to (must include http:// or https://)"
+                },
+                "wait_for": {
+                    "type": "string",
+                    "enum": ["networkidle", "domcontentloaded", "load"],
+                    "description": "What to wait for after navigation",
+                    "default": "networkidle"
+                },
+                "timeout": {
+                    "type": "integer",
+                    "description": "Navigation timeout in milliseconds",
+                    "default": 30000
+                }
+            },
+            "required": ["url"]
+        }
+    },
+    {
         "name": "analyze_viewport_screenshot",
         "description": "Analyze the current webpage viewport using vision AI to identify interactive elements with their bounding boxes and semantic labels. Takes a screenshot and returns descriptions of buttons, inputs, links, and other clickable elements.",
         "input_schema": {
@@ -159,6 +184,50 @@ class SonnetWebTools:
         """Initialize with a Playwright page object."""
         self.page = page
     
+    async def _navigate_to_url(self, url: str, wait_for: str = "networkidle", timeout: int = 30000) -> Dict[str, Any]:
+        """
+        Navigate to a URL and wait for page to load.
+        
+        Args:
+            url: URL to navigate to
+            wait_for: What to wait for ("networkidle", "domcontentloaded", "load")
+            timeout: Navigation timeout in milliseconds
+            
+        Returns:
+            Dict with navigation result
+        """
+        from datetime import datetime
+        
+        try:
+            await self.page.goto(url, wait_until=wait_for, timeout=timeout)
+            
+            # Additional wait for dynamic content
+            await self.page.wait_for_timeout(2000)
+            
+            # Get page information
+            title = await self.page.title()
+            final_url = self.page.url
+            
+            return {
+                "success": True,
+                "url": final_url,
+                "requested_url": url,
+                "title": title,
+                "wait_for": wait_for,
+                "timeout": timeout,
+                "timestamp": datetime.now().isoformat()
+            }
+            
+        except Exception as e:
+            return {
+                "success": False,
+                "error": str(e),
+                "url": url,
+                "wait_for": wait_for,
+                "timeout": timeout,
+                "timestamp": datetime.now().isoformat()
+            }
+    
     async def execute_tool(self, tool_name: str, parameters: Dict[str, Any]) -> Dict[str, Any]:
         """
         Execute a tool call from Claude Sonnet 3.7.
@@ -171,7 +240,14 @@ class SonnetWebTools:
             Dict containing the tool execution result
         """
         try:
-            if tool_name == "analyze_viewport_screenshot":
+            if tool_name == "navigate_to_url":
+                return await self._navigate_to_url(
+                    url=parameters["url"],
+                    wait_for=parameters.get("wait_for", "networkidle"),
+                    timeout=parameters.get("timeout", 30000)
+                )
+            
+            elif tool_name == "analyze_viewport_screenshot":
                 return await analyze_viewport_screenshot(
                     page=self.page,
                     page_url=parameters.get("page_url"),
@@ -181,19 +257,39 @@ class SonnetWebTools:
                 )
             
             elif tool_name == "perform_click_action":
-                return await perform_click_action(
+                result = await perform_click_action(
                     page=self.page,
                     bbox=parameters["bbox"],
                     verbose=parameters.get("verbose", False)
                 )
+                # Add verification - check if page state changed
+                if result.get("success"):
+                    await self.page.wait_for_timeout(1000)  # Additional wait
+                    result["page_url_after_click"] = self.page.url
+                return result
             
             elif tool_name == "perform_input_action":
-                return await perform_input_action(
+                result = await perform_input_action(
                     page=self.page,
                     bbox=parameters["bbox"],
                     text=parameters["text"],
                     verbose=parameters.get("verbose", False)
                 )
+                # Add verification - check if text was actually input
+                if result.get("success"):
+                    await self.page.wait_for_timeout(500)  # Wait for input to be processed
+                    # Try to verify the input was successful
+                    try:
+                        # Get the focused element's value if possible
+                        focused_value = await self.page.evaluate("document.activeElement.value || ''")
+                        result["input_verification"] = {
+                            "expected_text": parameters["text"],
+                            "actual_value": focused_value,
+                            "text_matches": parameters["text"].lower() in focused_value.lower()
+                        }
+                    except:
+                        result["input_verification"] = {"status": "could_not_verify"}
+                return result
             
             elif tool_name == "perform_select_action":
                 return await perform_select_action(

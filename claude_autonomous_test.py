@@ -18,7 +18,11 @@ from sonnet_tools_interface import get_tools_for_sonnet, create_tool_handler
 TEST_TASKS = [
     {
         "task_id": "job_search_seattle",
+<<<<<<< HEAD
         "description": "Find product manager jobs in Seattle. Navigate to aijobs.ai and use the available tools to search for and gather information about product manager positions in Seattle.",
+=======
+        "description": "Find product manager jobs in Seattle.",
+>>>>>>> aad1e90c59ffe40c61d68f7bc6283b67a8f75fff
         "starting_url": "https://aijobs.ai",
         "success_criteria": [
             "Successfully navigate to the website",
@@ -154,9 +158,16 @@ def create_claude_prompt(task: dict, available_tools: list) -> str:
 1. Use the available tools to complete the task
 2. Make autonomous decisions about which tools to call and when
 3. Start by navigating to the starting URL
+<<<<<<< HEAD
 4. Analyze the page to understand its structure
 5. Take appropriate actions based on what you find
 6. Be methodical and explain your reasoning for each tool call
+=======
+4. Break the task into subtasks and use the tools to complete the task.
+5. Take appropriate actions based on what you find
+6. Be methodical and explain your reasoning for each tool call
+7. Wait for tool calls to complete before making the next tool call.
+>>>>>>> aad1e90c59ffe40c61d68f7bc6283b67a8f75fff
 
 Begin by calling the appropriate tools to complete this task. You should start with navigating to the URL and then analyzing the page structure."""
 

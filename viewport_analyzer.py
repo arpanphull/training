@@ -170,7 +170,14 @@ class ViewportAnalyzer:
         
         # Perform click
         await page.mouse.click(click_x, click_y)
-        await page.wait_for_timeout(1000)  # Wait for potential page changes
+        
+        # Wait for potential page changes or navigation
+        try:
+            # Wait for either navigation or timeout
+            await page.wait_for_load_state("networkidle", timeout=5000)
+        except:
+            # If no navigation, just wait for potential dynamic changes
+            await page.wait_for_timeout(2000)
         
         if self.verbose:
             print(f"[ViewportAnalyzer] Clicked at ({click_x}, {click_y})")
@@ -196,11 +203,13 @@ class ViewportAnalyzer:
         
         # Click to focus the input field
         await page.mouse.click(click_x, click_y)
-        await page.wait_for_timeout(500)
+        await page.wait_for_timeout(1000)  # Increased wait time
         
         # Clear existing text and type new text
         await page.keyboard.press("Control+a")  # Select all
+        await page.wait_for_timeout(200)
         await page.keyboard.type(text)
+        await page.wait_for_timeout(500)  # Wait for text to be processed
         
         if self.verbose:
             print(f"[ViewportAnalyzer] Typed '{text}' at ({click_x}, {click_y})")
