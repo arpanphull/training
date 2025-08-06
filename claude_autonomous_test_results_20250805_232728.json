@@ -1,0 +1,97 @@
+{
+  "test_type": "claude_autonomous",
+  "timestamp": "2025-08-05T23:27:28.181135",
+  "tasks": [
+    {
+      "task_id": "job_search_seattle",
+      "description": "Find product manager jobs in Seattle. open aijobs.ai and use the available tools to search for and gather information about product manager positions in Seattle.",
+      "starting_url": "https://aijobs.ai",
+      "success_criteria": [
+        "Successfully navigate to the website",
+        "Analyze the page structure",
+        "Find and use search functionality",
+        "Locate product manager jobs in Seattle",
+        "Gather relevant job information"
+      ]
+    },
+    {
+      "task_id": "form_interaction",
+      "description": "Navigate to httpbin.org/forms/post and fill out the contact form with sample information, then submit it.",
+      "starting_url": "https://httpbin.org/forms/post",
+      "success_criteria": [
+        "Navigate to the form page",
+        "Analyze form fields",
+        "Fill out all required fields",
+        "Submit the form successfully"
+      ]
+    }
+  ],
+  "results": [
+    {
+      "task_id": "job_search_seattle",
+      "result": {
+        "total_tool_calls": 1,
+        "successful_calls": 0,
+        "failed_calls": 1,
+        "success_rate": 0.0,
+        "tools_used": [
+          "navigate_to_url"
+        ],
+        "execution_log": [
+          {
+            "timestamp": "2025-08-05T23:27:20.765651",
+            "tool_name": "navigate_to_url",
+            "parameters": {
+              "url": "https://aijobs.ai"
+            },
+            "result": {
+              "success": false,
+              "error": "Unknown tool: navigate_to_url",
+              "available_tools": [
+                "analyze_viewport_screenshot",
+                "perform_click_action",
+                "perform_input_action",
+                "perform_select_action",
+                "perform_scroll_action"
+              ]
+            },
+            "success": false
+          }
+        ]
+      }
+    },
+    {
+      "task_id": "form_interaction",
+      "result": {
+        "total_tool_calls": 1,
+        "successful_calls": 0,
+        "failed_calls": 1,
+        "success_rate": 0.0,
+        "tools_used": [
+          "navigate_to_url"
+        ],
+        "execution_log": [
+          {
+            "timestamp": "2025-08-05T23:27:25.029511",
+            "tool_name": "navigate_to_url",
+            "parameters": {
+              "url": "https://httpbin.org/forms/post"
+            },
+            "result": {
+              "success": false,
+              "error": "Unknown tool: navigate_to_url",
+              "available_tools": [
+                "analyze_viewport_screenshot",
+                "perform_click_action",
+                "perform_input_action",
+                "perform_select_action",
+                "perform_scroll_action"
+              ]
+            },
+            "success": false
+          }
+        ]
+      }
+    }
+  ]
+}
