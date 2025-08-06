@@ -1,0 +1,47 @@
+{
+  "job_pages": [],
+  "total_pages_explored": 0,
+  "total_job_pages_found": 0,
+  "discovered_elements": [
+    {
+      "label": "Jobs",
+      "bbox": [
+        924,
+        567,
+        955,
+        580
+      ],
+      "clickable": true,
+      "viewport_number": 16,
+      "scroll_position": 12800,
+      "page_url": "https://stripe.com/"
+    },
+    {
+      "label": "JOBS",
+      "bbox": [
+        174,
+        25,
+        230,
+        43
+      ],
+      "clickable": true,
+      "viewport_number": 17,
+      "scroll_position": 13600,
+      "page_url": "https://stripe.com/jobs"
+    },
+    {
+      "label": "See open roles",
+      "bbox": [
+        109,
+        602,
+        258,
+        626
+      ],
+      "clickable": true,
+      "viewport_number": 17,
+      "scroll_position": 13600,
+      "page_url": "https://stripe.com/jobs"
+    }
+  ],
+  "total_elements_discovered": 3
+}

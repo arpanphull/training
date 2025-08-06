@@ -1,0 +1,34 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.amazon.jobs/en/",
+    "https://www.amazon.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Careers",
+      "bbox": [
+        150,
+        510,
+        201,
+        523
+      ],
+      "page_url": "https://www.amazon.com/",
+      "scroll_position": 4000,
+      "timestamp": "2025-08-05T17:50:59.424255"
+    },
+    {
+      "label": "Find jobs",
+      "bbox": [
+        85,
+        204,
+        213,
+        226
+      ],
+      "page_url": "https://www.amazon.jobs/en/",
+      "scroll_position": 0,
+      "timestamp": "2025-08-05T17:51:06.322872"
+    }
+  ],
+  "total_elements": 2
+}

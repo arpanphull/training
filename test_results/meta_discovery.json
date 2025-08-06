@@ -1,0 +1,21 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://www.meta.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Careers",
+      "bbox": [
+        1009,
+        87,
+        1059,
+        96
+      ],
+      "page_url": "https://www.meta.com/",
+      "scroll_position": 4800,
+      "timestamp": "2025-08-05T17:51:36.554943"
+    }
+  ],
+  "total_elements": 1
+}

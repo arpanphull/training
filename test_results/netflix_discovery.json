@@ -1,0 +1,22 @@
+{
+  "job_pages": [],
+  "visited_urls": [
+    "https://jobs.netflix.com/",
+    "https://www.netflix.com/"
+  ],
+  "discovered_elements": [
+    {
+      "label": "Jobs",
+      "bbox": [
+        650,
+        348,
+        682,
+        359
+      ],
+      "page_url": "https://www.netflix.com/",
+      "scroll_position": 2400,
+      "timestamp": "2025-08-05T17:52:01.029734"
+    }
+  ],
+  "total_elements": 1
+}
